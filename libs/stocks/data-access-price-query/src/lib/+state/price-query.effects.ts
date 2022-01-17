@@ -18,19 +18,30 @@ import { PriceQueryResponse } from './price-query.type';
 
 @Injectable()
 export class PriceQueryEffects {
+  public cache = new Map();
+
   @Effect() loadPriceQuery$ = this.dataPersistence.fetch(
     PriceQueryActionTypes.FetchPriceQuery,
     {
       run: (action: FetchPriceQuery, state: PriceQueryPartialState) => {
-        return this.httpClient
-          .get(
-            `${this.env.apiURL}/beta/stock/${action.symbol}/chart/${
-              action.period
-            }?token=${this.env.apiKey}`
-          )
-          .pipe(
-            map(resp => new PriceQueryFetched(resp as PriceQueryResponse[]))
-          );
+
+        const endpoint = `${this.env.apiURL}/beta/stock/${action.symbol}/chart/${
+          action.period
+        }?token=${this.env.apiKey}`
+
+        const getCacheData = this.cache.get(endpoint);
+        if (getCacheData) {
+          return getCacheData;
+        }
+        
+        const response = this.httpClient.get
+        (endpoint).pipe(map(resp => new PriceQueryFetched(resp as PriceQueryResponse[])));
+
+        response.subscribe(data => {
+          this.cache.set(endpoint, data)
+        });
+        return response;
+
       },
 
       onError: (action: FetchPriceQuery, error) => {
