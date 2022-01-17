@@ -10,7 +10,8 @@ import { PriceQueryFacade } from '@coding-challenge/stocks/data-access-price-que
 export class StocksComponent implements OnInit {
   stockPickerForm: FormGroup;
   symbol: string;
-  period: string;
+  public min: Date;
+  public max: Date;
 
   quotes$ = this.priceQuery.priceQueries$;
 
@@ -28,15 +29,18 @@ export class StocksComponent implements OnInit {
   constructor(private fb: FormBuilder, private priceQuery: PriceQueryFacade) {
     this.stockPickerForm = fb.group({
       symbol: [null, Validators.required],
-      period: [null, Validators.required]
+      dateFrom: [null, Validators.required],
+      dateTo: [null, Validators.required],
     });
+    this.max = new Date();
   }
 
   ngOnInit() {}
 
   fetchQuote() {
     if (this.stockPickerForm.valid) {
-      const { symbol, period } = this.stockPickerForm.value;
+      const { symbol } = this.stockPickerForm.value;
+      let period = "max";
       this.priceQuery.fetchQuote(symbol, period);
     }
   }
