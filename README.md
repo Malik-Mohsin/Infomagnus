@@ -38,8 +38,17 @@ A proxy has been set up in `stocks` to proxy calls to `locahost:3333` which is t
 Please provide a short code review of the base `master` branch:
 
 1. What is done well?
+
+-> Moduler approach/Separate modules
+
 2. What would you change?
+
+-> I would like to change the structure of form and would like to change the Chart Size.
+Also interfaces and classes rather than defining type in each component
+
 3. Are there any code smells or problematic implementations?
+
+->Error in chart component html file, Changed ngif from Data to ChartData.
 
 > Make a PR to fix at least one of the issues that you identify
 
