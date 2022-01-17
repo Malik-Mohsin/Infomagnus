@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NxModule } from '@nrwl/nx';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
+import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { environment } from '../environments/environment';
       }
     ]),
     NoopAnimationsModule,
+    MatNativeDateModule,
     NxModule.forRoot(),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
